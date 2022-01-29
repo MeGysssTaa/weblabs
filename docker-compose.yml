@@ -6,3 +6,9 @@ services:
     volumes:
       - ./code:/code
       - ./hosts:/etc/nginx/conf.d
+    links:
+      - php
+  php:
+    image: php:7-fpm
+    volumes:
+      - ./code:/code
