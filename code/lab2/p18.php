@@ -35,6 +35,7 @@ $arr = [1, 2, 3];
 if (count($arr) === 3)
     echo array_sum($arr);
 
+
 function isSumGt10(int $a, int $b): bool {
     return $a + $b > 10;
 }
