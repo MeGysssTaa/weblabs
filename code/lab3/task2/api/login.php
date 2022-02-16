@@ -16,4 +16,4 @@ $_SESSION["firstName"] = $_POST["firstName"];
 $_SESSION["lastName"] = $_POST["lastName"];
 $_SESSION["age"] = $_POST["age"];
 
-header("Refresh:3; url=../b3-greeting.php");
+header("Refresh:3; url=../b2-greeting.php");

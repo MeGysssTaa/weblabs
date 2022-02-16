@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 2 (c)</title>
+</head>
+<body>
+    <form name="survey" action="api/survey.php" method="POST">
+        <label>
+            First Name
+            <br>
+            <input name="firstName">
+        </label>
+        <br>
+        <label>
+            Last Name
+            <br>
+            <input name="lastName">
+        </label>
+        <br>
+        <label>
+            Age
+            <br>
+            <input name="age" type="number" min="18" max="127" value="18">
+        </label>
+        <br>
+        <label>
+            Country
+            <br>
+            <select name="country">
+                <option value="ru">Russian Federation</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
+            </select>
+        </label>
+        <br>
+        <label>
+            Are you enjoying languages with weak typing?
+            <br>
+            <label>
+                <input type="radio" name="isWeakTypingEnjoyer" value="true" disabled />
+                Yes
+            </label>
+            <label>
+                <input type="radio" name="isWeakTypingEnjoyer" value="false" checked />
+                No
+            </label>
+        </label>
+        <br>
+        <input type="submit" name="submitBtn" value="Submit"/>
+    </form>
+</body>
+</html>
