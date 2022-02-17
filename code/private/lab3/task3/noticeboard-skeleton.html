@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ovito</title>
+    <style>
+        table {
+            border-collapse: separate;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #aaaaaa;
+            text-align: left;
+            padding: 10px;
+        }
+
+        td {
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ovito</h1>
+    <h3>Create</h3>
+    <form name="adPost" action="../../../lab3/task3/noticeboard.php" method="POST">
+        <label>
+            E-Mail
+            <br>
+            <input type="email" name="email">
+        </label>
+        <br>
+        <label>
+            Category
+            <br>
+            <select name="category">
+                <!-- %%__CATEGORIES__%% -->
+            </select>
+        </label>
+        <br>
+        <label>
+            Title
+            <br>
+            <input type="text" name="title" maxlength="40">
+        </label>
+        <br>
+        <label>
+            Description
+            <br>
+            <textarea name="desc" rows="10" cols="80"></textarea>
+        </label>
+        <br>
+        <input type="submit" name="createBtn" value="Create"/>
+    </form>
+    <h3>Recent</h3>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Contact E-Mail</th>
+        </tr>
+        <!-- %%__ADS__%% -->
+    </table>
+</body>
+</html>
