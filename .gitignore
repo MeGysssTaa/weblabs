@@ -1,3 +1,6 @@
 *~
 .idea
 .data
+.config
+composer.phar
+/vendor/
