@@ -1,6 +1,5 @@
 *~
-.idea
-.data
-.config
+.*
+!/.gitignore
 composer.phar
 /vendor/

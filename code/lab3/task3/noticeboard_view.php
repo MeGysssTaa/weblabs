@@ -2,14 +2,14 @@
 
 require_once "ads.php";
 
-function handleNoticeboardRequest(AdsRepository $adsRepo) {
+function handleNoticeboardRequest(string $url, AdsRepository $adsRepo) {
     switch ($_SERVER['REQUEST_METHOD']) {
         case "GET":
-            get($adsRepo);
+            get($url, $adsRepo);
             break;
 
         case "POST":
-            post($adsRepo);
+            post($url, $adsRepo);
             break;
 
         default:
@@ -18,7 +18,7 @@ function handleNoticeboardRequest(AdsRepository $adsRepo) {
     }
 }
 
-function get(AdsRepository $adsRepo) {
+function get(string $url, AdsRepository $adsRepo) {
     $html = file_get_contents("/code/private/lab3/task3/noticeboard-skeleton.html");
     $categoriesListHtml = "";
     $adsTableHtml = "";
@@ -27,28 +27,27 @@ function get(AdsRepository $adsRepo) {
         $categoriesListHtml .= "<option value=\"$category\">$category</option>";
         $ads = $adsRepo->listAds($category);
 
-        foreach ($ads as $adsFromEmail) {
-            foreach ($adsFromEmail as $ad) {
-                $desc = nl2br($ad->getDescription());
-                $adsTableHtml .= "
-                    <tr>
-                        <td>$category</td>
-                        <td>{$ad->getTitle()}</td>
-                        <td>$desc</td>
-                        <td>{$ad->getContactEmail()}</td>
-                    </tr>
-                ";
-            }
+        foreach ($ads as $ad) {
+            $desc = nl2br($ad->getDescription());
+            $adsTableHtml .= "
+                <tr>
+                    <td>$category</td>
+                    <td>{$ad->getTitle()}</td>
+                    <td>$desc</td>
+                    <td>{$ad->getContactEmail()}</td>
+                </tr>
+            ";
         }
     }
 
+    $html = str_replace("<!-- %%__URL__%% -->", $url, $html);
     $html = str_replace("<!-- %%__CATEGORIES__%% -->", $categoriesListHtml, $html);
     $html = str_replace("<!-- %%__ADS__%% -->", $adsTableHtml, $html);
 
     echo $html;
 }
 
-function post(AdsRepository $adsRepo) {
+function post(string $url, AdsRepository $adsRepo) {
     if (!isset($_POST["email"]) || !isValidPath($_POST["email"])
         || !isset($_POST["category"]) || !isValidPath($_POST["category"])
         || !isset($_POST["title"]) || !isValidPath($_POST["title"])
