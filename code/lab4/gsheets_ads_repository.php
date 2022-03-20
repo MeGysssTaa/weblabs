@@ -82,4 +82,6 @@ class GoogleSheetsAdsRepository implements AdsRepository {
         }
     }
 
+    public function tearDown() {}
+
 }

@@ -16,6 +16,8 @@ function handleNoticeboardRequest(string $url, AdsRepository $adsRepo) {
             http_response_code(404);
             echo "Not Found";
     }
+
+    $adsRepo->tearDown();
 }
 
 function get(string $url, AdsRepository $adsRepo) {

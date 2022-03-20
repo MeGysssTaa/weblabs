@@ -44,4 +44,6 @@ class LocalFileSystemAdsRepository implements AdsRepository {
         return $children === false ? [] : array_diff($children, array('.', '..'));
     }
 
+    public function tearDown() {}
+
 }
