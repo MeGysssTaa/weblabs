@@ -16,14 +16,14 @@ class MySqlAdsRepository implements AdsRepository {
         );
 
         if (mysqli_connect_errno())
-            echo "MySQL connect error: " . mysqli_connect_error();
+            throw new mysqli_sql_exception();
     }
 
     public function listCategories(): array {
         $query = "select distinct category from ad";
         $categories = [];
 
-        if (!mysqli_connect_error() && $result = $this->db->query($query))
+        if ($result = $this->db->query($query))
             while ($row = $result->fetch_assoc())
                 $categories[] = $row["category"];
 
@@ -34,7 +34,7 @@ class MySqlAdsRepository implements AdsRepository {
         $query = "select * from ad where category = '$category'";
         $ads = [];
 
-        if (!mysqli_connect_error() && $result = $this->db->query($query)) {
+        if ($result = $this->db->query($query)) {
             while ($row = $result->fetch_assoc()) {
                 $ads[] = new Ad(
                     $row["category"],
