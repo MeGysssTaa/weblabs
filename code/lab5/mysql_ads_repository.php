@@ -10,9 +10,9 @@ class MySqlAdsRepository implements AdsRepository {
     public function __construct() {
         $this->db = new mysqli(
             "db", // mysql container name?
-            getenv("MYSQL_USER"),
-            getenv("MYSQL_PASS"),
-            getenv("MYSQL_DB")
+            getenv("PHP_MYSQL_USER"),
+            getenv("PHP_MYSQL_PASS"),
+            getenv("PHP_MYSQL_DB")
         );
 
         if (mysqli_connect_errno())

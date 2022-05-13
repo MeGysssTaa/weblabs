@@ -2,29 +2,30 @@
 
 require_once "ads.php";
 
+$DEFAULT_HANDLER = fn($_, $__) => notFound();
+$HANDLERS = [
+    "GET" => fn($url, $adsRepo) => get($url, $adsRepo),
+    "POST" => fn($url, $adsRepo) => post($url, $adsRepo),
+];
+
 function handleNoticeboardRequest(string $url, AdsRepository $adsRepo) {
-    switch ($_SERVER['REQUEST_METHOD']) {
-        case "GET":
-            get($url, $adsRepo);
-            break;
-
-        case "POST":
-            post($url, $adsRepo);
-            break;
-
-        default:
-            http_response_code(404);
-            echo "Not Found";
-    }
-
-    $adsRepo->tearDown();
+    global $DEFAULT_HANDLER, $HANDLERS;
+    $handle = $HANDLERS[$_SERVER['REQUEST_METHOD']] ?? $DEFAULT_HANDLER;
+    $handle($url, $adsRepo);
 }
 
 function get(string $url, AdsRepository $adsRepo) {
     $html = file_get_contents("/code/private/lab3/task3/noticeboard-skeleton.html");
     $categoriesListHtml = "";
     $adsTableHtml = "";
+    populateWithData($categoriesListHtml, $adsTableHtml, $adsRepo);
+    $html = str_replace("<!-- %%__URL__%% -->", $url, $html);
+    $html = str_replace("<!-- %%__CATEGORIES__%% -->", $categoriesListHtml, $html);
+    $html = str_replace("<!-- %%__ADS__%% -->", $adsTableHtml, $html);
+    echo $html;
+}
 
+function populateWithData(string& $categoriesListHtml, string& $adsTableHtml, AdsRepository $adsRepo) {
     foreach ($adsRepo->listCategories() as $category) {
         $categoriesListHtml .= "<option value=\"$category\">$category</option>";
         $ads = $adsRepo->listAds($category);
@@ -41,12 +42,6 @@ function get(string $url, AdsRepository $adsRepo) {
             ";
         }
     }
-
-    $html = str_replace("<!-- %%__URL__%% -->", $url, $html);
-    $html = str_replace("<!-- %%__CATEGORIES__%% -->", $categoriesListHtml, $html);
-    $html = str_replace("<!-- %%__ADS__%% -->", $adsTableHtml, $html);
-
-    echo $html;
 }
 
 function post(string $url, AdsRepository $adsRepo) {
@@ -74,4 +69,9 @@ function isValidPath(string $path): bool {
     return strlen($path) > 0
         && strpos($path, "/") === false
         && strpos($path, "..") === false;
+}
+
+function notFound() {
+    http_response_code(404);
+    echo "Not Found";
 }
