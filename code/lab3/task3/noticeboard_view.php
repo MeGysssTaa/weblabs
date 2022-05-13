@@ -50,19 +50,14 @@ function post(string $url, AdsRepository $adsRepo) {
         || !isset($_POST["title"]) || !isValidPath($_POST["title"])
         || !isset($_POST["desc"]))
     {
-        http_response_code(400);
-        echo "Bad Request";
+        badRequest();
         return;
     }
 
     $ad = new Ad($_POST["category"], $_POST["title"], $_POST["desc"], $_POST["email"]);
-
-    if ($adsRepo->saveAd($ad))
-        header("Refresh:0");
-    else {
-        http_response_code(500);
-        echo "Internal Server Error";
-    }
+    if (!$adsRepo->saveAd($ad))
+        throw new RuntimeException("failed to save a new Ad");
+    header("Refresh:0");
 }
 
 function isValidPath(string $path): bool {
@@ -74,6 +69,11 @@ function isValidPath(string $path): bool {
 function notFound() {
     http_response_code(404);
     echo "Not Found";
+}
+
+function badRequest() {
+    http_response_code(400);
+    echo "Bad Request";
 }
 
 function internalServerError() {
